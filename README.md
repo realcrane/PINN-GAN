@@ -113,16 +113,5 @@ bash scripts/run_ntk_18.sh cuda:0
 
 ## Citation
 
-If this code is used in academic work, cite the original DEQGAN work in
-addition to the paper associated with the NTK modifications:
-
-```bibtex
-@misc{randle2020unsupervised,
-  title={Unsupervised Learning of Solutions to Differential Equations with Generative Adversarial Networks},
-  author={Dylan Randle and Pavlos Protopapas and David Sondak},
-  year={2020},
-  eprint={2007.11133},
-  archivePrefix={arXiv},
-  primaryClass={cs.LG}
-}
+If this code is used in academic work, cite the original DEQGAN work.
 ```
