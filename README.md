@@ -113,5 +113,4 @@ bash scripts/run_ntk_18.sh cuda:0
 
 ## Citation
 
-If this code is used in academic work, cite the original DEQGAN work.
-```
+If this code is used in academic work, cite our paper and the original DEQGAN work.
