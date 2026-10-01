@@ -39,7 +39,7 @@ training:
   save: True
   save_for_animation: False
   view: [35, 50]
-  dirname: 'Heat_NTK_wgan_rb'
+  dirname: 'Rea_NTK_wgan_rb'
 
 generator:
   in_dim: 2
