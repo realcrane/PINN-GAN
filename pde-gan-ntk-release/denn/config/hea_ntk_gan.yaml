@@ -1,0 +1,62 @@
+problem:
+  nx: 32
+  nt: 32
+  c: 1
+  sampling: 'perturb'
+
+training:
+  method: 'unsupervised'
+  modelseed : 0
+  seed: 0
+  niters: 4500
+  g_lr: 0.001
+  d_lr: 0.001
+  g_betas: [ 0.9, 0.999 ]
+  d_betas: [ 0.9, 0.999 ]
+  lr_schedule: True
+  gamma: 0.95
+  noise: True
+  step_size: 25
+  obs_every: 1
+  d1: 1
+  d2: 1
+  G_iters: 20
+  D_iters: 20
+  adaptive_G: True
+  adaptive_D: True
+  loss_fn: MSELoss
+  ntk: True
+  energy: True
+  wgan: False
+  gan: True
+  lsgan: False
+  gp: 0.1
+  conditional: False
+  train_mse: True
+  log: True
+  plot: True
+  plot_1d_curves: False
+  save: True
+  save_for_animation: False
+  view: [35, 50]
+  dirname: 'Heat_NTK_gan_rb'
+
+generator:
+  in_dim: 2
+  out_dim: 1
+  n_hidden_units: 50
+  n_hidden_layers: 3
+  activation: 'Tanh'
+  residual: True
+  regress: True
+  pretrained: False
+
+discriminator:
+  in_dim: 1
+  out_dim: 1
+  n_hidden_units: 20
+  n_hidden_layers: 5
+  activation: 'Tanh'
+  residual: True
+  regress: False
+  spectral_norm: True
