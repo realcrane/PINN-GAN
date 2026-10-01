@@ -33,7 +33,7 @@ training:
   save: True
   save_for_animation: False
   view: [35, 50]
-  dirname: 'HeatRd_del_1_1_gkr'
+  dirname: 'Rea_del_1_1_gkr'
 
 generator:
   in_dim: 2
