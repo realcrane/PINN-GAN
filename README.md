@@ -1,4 +1,4 @@
-# NTK-GAN-PINN code
+# GAN-NTK-PINN code
 This is the official code repository for our NeurIPS 2026 paper, **“When and Why Adversarial Training Improves PINNs: A Neural Tangent Kernel Perspective.”**
 
 This repository is a minimal, reproducible release of two experiment families
