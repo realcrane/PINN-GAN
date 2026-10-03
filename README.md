@@ -10,7 +10,7 @@ by these experiments.
 2. **NTK-GAN-RB:** eighteen experiments using `denn.algos_NTK`, with GAN, LSGAN, and WGAN configurations for each of the six PDEs.
 3. **NTK-GAN-noRB** eighteen experiments using `denn.algos_NTK`, with GAN, LSGAN, and WGAN configurations for each of the six PDEs. For specific adjustments, refer to Understanding the YAML configurations.
 4. **Result Plots:** All experimental results and the corresponding plotting scripts can be found in the `experiments_plot` directory.
-5. 
+
 The original `denn/experiments.py` is retained as research source code. Use
 `run_experiment.py` to choose a trainer without editing that file between runs.
 
