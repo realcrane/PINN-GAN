@@ -9,7 +9,7 @@ from denn.algos_del import train_GAN_2D as train_deqgan
 from denn.config.config import get_config
 
 
-PROBLEMS = ("pos", "lap1", "lap2", "kel", "rea", "burv")
+PROBLEMS = ("pos", "lap1", "lap2", "kle", "rea", "burv")
 NTK_METHODS = ("gan", "lsgan", "wgan")
 DEQGAN_KEYS = set(PROBLEMS)
 NTK_KEYS = {
