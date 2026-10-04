@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 CONFIG_DIR = ROOT / "denn" / "config"
 RUNS_DIR = ROOT / "experiments" / "runs"
 RESULTS_DIR = ROOT / "results"
-PROBLEMS = ("pos", "lap1", "lap2", "wav", "hea", "burv")
+PROBLEMS = ("pos", "lap1", "lap2", "kle", "rea", "burv")
 METHODS = ("gan", "lsgan", "wgan")
 
 
