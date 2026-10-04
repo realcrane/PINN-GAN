@@ -9,7 +9,7 @@ LOG_DIR="$REPO_DIR/logs/ntk"
 mkdir -p "$LOG_DIR"
 
 overall_exit=0
-for problem in pos lap1 lap2 wav hea burv; do
+for problem in pos lap1 lap2 kle rea burv; do
     for method in gan lsgan wgan; do
         pkey="${problem}_ntk_${method}"
         echo "START $pkey on $DEVICE"
