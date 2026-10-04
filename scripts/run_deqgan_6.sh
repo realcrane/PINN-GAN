@@ -9,7 +9,7 @@ LOG_DIR="$REPO_DIR/logs/deqgan"
 mkdir -p "$LOG_DIR"
 
 overall_exit=0
-for pkey in pos lap1 lap2 wav hea burv; do
+for pkey in pos lap1 lap2 kle rea burv; do
     echo "START $pkey on $DEVICE"
     if (
         cd "$REPO_DIR" || exit 1
