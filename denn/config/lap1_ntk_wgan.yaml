@@ -23,8 +23,6 @@ problem:
 training:
   D_iters: 20
   G_iters: 20
-  adaptive_D: true
-  adaptive_G: true
   conditional: false
   d1: 1
   d2: 1
