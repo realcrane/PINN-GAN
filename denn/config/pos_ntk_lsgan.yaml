@@ -45,7 +45,7 @@ training:
   lsgan: true
   method: unsupervised
   modelseed: 0
-  niters: 3
+  niters: 3000
   noise: true
   ntk: true
   obs_every: 1
