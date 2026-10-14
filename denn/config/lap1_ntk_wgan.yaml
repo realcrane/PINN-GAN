@@ -1,0 +1,58 @@
+discriminator:
+  activation: Tanh
+  in_dim: 1
+  n_hidden_layers: 2
+  n_hidden_units: 50
+  out_dim: 1
+  regress: true
+  residual: false
+  spectral_norm: false
+generator:
+  activation: Tanh
+  in_dim: 2
+  n_hidden_layers: 4
+  n_hidden_units: 50
+  out_dim: 1
+  pretrained: false
+  regress: true
+  residual: true
+problem:
+  nx: 32
+  ny: 32
+  sampling: perturb
+training:
+  D_iters: 20
+  G_iters: 20
+  conditional: false
+  d1: 1
+  d2: 1
+  d_betas:
+  - 0.9
+  - 0.999
+  d_lr: 0.001
+  dirname: lap1_NTK_wgan_rb
+  energy: true
+  g_betas:
+  - 0.9
+  - 0.999
+  g_lr: 0.001
+  gamma: 0.95
+  gan: false
+  gp: 0.1
+  hard: true
+  log: true
+  loss_fn: MSELoss
+  lr_schedule: true
+  lsgan: false
+  method: unsupervised
+  modelseed: 0
+  niters: 3000
+  noise: true
+  ntk: true
+  obs_every: 1
+  plot: true
+  save: true
+  save_for_animation: false
+  seed: 0
+  step_size: 10
+  wgan: true

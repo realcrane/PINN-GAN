@@ -1,0 +1,57 @@
+problem:
+  nx: 32
+  ny: 32
+  sampling: 'perturb'
+
+training:
+  method: 'unsupervised'
+  seed: 0
+  modelseed : 0
+  niters: 3000
+  g_lr: 0.012124383626117501
+  d_lr: 0.088441066074259264
+  g_betas: [ 0.29551987, 0.35822444 ]
+  d_betas: [ 0.5751795, 0.13306347 ]
+  lr_schedule: True
+  gamma: 0.95336880203327612
+  noise: True
+  step_size: 9
+  obs_every: 1
+  d1: 1
+  d2: 1
+  G_iters: 20
+  D_iters: 20
+  loss_fn: MSELoss
+  ntk: True
+  energy: True
+  wgan: False
+  gan: True
+  lsgan: False
+  gp: 0.1
+  conditional: False
+  log: True
+  plot: True
+  save: True
+  save_for_animation: False
+  hard: True
+  dirname: 'Lap1_NTK_gan_rb_deqgan_hparams'
+
+generator:
+  in_dim: 2
+  out_dim: 1
+  n_hidden_units: 50
+  n_hidden_layers: 4
+  activation: 'Tanh'
+  residual: True
+  regress: True
+  pretrained: False
+
+discriminator:
+  in_dim: 1
+  out_dim: 1
+  n_hidden_units: 50
+  n_hidden_layers: 2
+  activation: 'Tanh'
+  residual: True
+  regress: False
+  spectral_norm: True
