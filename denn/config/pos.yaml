@@ -29,6 +29,7 @@ training:
   plot: True
   save: True
   save_for_animation: False
+  train_mse: True
   dirname: 'Pos_del_1_1_gkr'
 
 generator:
