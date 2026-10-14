@@ -112,6 +112,13 @@ Run all eighteen configurations sequentially:
 bash scripts/run_ntk_18.sh cuda:0
 ```
 
+Run all eighteen GAN-without-rollback baselines without editing or
+overwriting the rollback configurations:
+
+```bash
+bash scripts/run_ntk_18_norb.sh cuda:0
+```
+
 
 ## Understanding the YAML configurations
 
@@ -139,8 +146,6 @@ To run GAN with rollback, use the corresponding `*_ntk_gan.yaml` file with
 training:
   G_iters: 20
   D_iters: 20
-  adaptive_G: true
-  adaptive_D: true
   ntk: true
   energy: true
 ```
@@ -151,8 +156,6 @@ To run GAN without rollback, edit these entries in the same configuration:
 training:
   G_iters: 1
   D_iters: 1
-  adaptive_G: false
-  adaptive_D: false
   ntk: false
   energy: false
 ```
@@ -167,8 +170,6 @@ disabling rollback does not require switching to the DEQGAN trainer.
 |---|---|---:|---:|
 | `G_iters` | Number of generator update steps per training cycle | `20` | `1` |
 | `D_iters` | Number of discriminator update steps per training cycle | `20` | `1` |
-| `adaptive_G` | Enable generator rollback | `true` | `false` |
-| `adaptive_D` | Enable discriminator rollback | `true` | `false` |
 | `ntk` | Enable the NTK-based indicator | `true` | `false` |
 | `energy` | Enable residual-energy monitoring | `true` | `false` |
 
@@ -192,7 +193,7 @@ python -u run_experiment.py \
 Start from the corresponding configurations (`kle_ntk_gan.yaml` and
 `lap2_ntk_gan.yaml`) and adjust the update counts and rollback switches to
 match the ablation being reproduced. Set `G_iters` and `D_iters` to the required
-update counts, and adjust the four Boolean options (`adaptive_G`, `adaptive_D`,
+update counts, and adjust the two Boolean options (
 `ntk`, and `energy`) according to the experiment. For the
 complete GAN-without-rollback baseline, use all six values in the
 "GAN without rollback" column above. Keep the other hyperparameters unchanged
