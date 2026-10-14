@@ -57,7 +57,6 @@ def compute_gamma(fake, D, wgan=True,lsgan=True,gan=True, eps=1e-14):
 
     if lsgan:
         gamma =- (1.0 / N) * dD_dfake * (D_fake.detach()-1)
-        #gamma = (1.0 / N) * dD_dfake / (1.0 - D_fake.detach() + eps)
 
     return gamma.detach(), D_fake.detach(), dD_dfake.detach()
 
