@@ -36,9 +36,38 @@ def diff(x, t, order=1):
         der, = autograd.grad(der, t, create_graph=True, grad_outputs=ones)
     return der
 
+def save_training_arrays(mse_dict, loss_dict, dirname):
+    """Save each training history once using the plotting-compatible names."""
+    if not dirname:
+        raise RuntimeError('Please provide a directory name `dirname`.')
+
+    os.makedirs(dirname, exist_ok=True)
+
+    mse_filenames = {
+        'train': 'train_mse.npy',
+        'val': 'val_mse.npy',
+    }
+    loss_filenames = {
+        'G': 'G_loss.npy',
+        'D': 'D_loss.npy',
+        'rKr_gamma': 'rKr_gamma_loss.npy',
+        'residual_energy': 'residual_energy_loss.npy',
+        'best_G_step': 'best_G_step.npy',
+        'best_D_step': 'best_D_step.npy',
+    }
+
+    for key, values in mse_dict.items():
+        filename = mse_filenames.get(key, f'{key}_mse.npy')
+        np.save(os.path.join(dirname, filename), np.asarray(values))
+
+    for key, values in loss_dict.items():
+        filename = loss_filenames.get(key, f'{key}_loss.npy')
+        np.save(os.path.join(dirname, filename), np.asarray(values))
+
+
 def plot_results(mse_dict, loss_dict, grid, pred_dict, diff_dict=None, clear=False,
-    save=False, dirname=None, logloss=False, alpha=0.8, plot_sep_curves=False, 
-    dims=None, plot_1d_curves=False):
+    save=False, dirname=None, logloss=False, alpha=0.8, plot_sep_curves=False,
+    dims=None, plot_1d_curves=False, save_arrays=True):
     """ helpful plotting function """
 
     plt.rc('axes', titlesize=20, labelsize=20)
@@ -222,10 +251,8 @@ def plot_results(mse_dict, loss_dict, grid, pred_dict, diff_dict=None, clear=Fal
             os.mkdir(dirname)
         plt.savefig(os.path.join(dirname, 'plot_1.png'), bbox_inches='tight', dpi=300)
         np.save(os.path.join(dirname, "grid"), grid.cpu())
-        for k, v in mse_dict.items():
-            np.save(os.path.join(dirname, f"{k}_mse"), v)
-        for k, v in loss_dict.items():
-            np.save(os.path.join(dirname, f"{k}_loss"), v)
+        if save_arrays:
+            save_training_arrays(mse_dict, loss_dict, dirname)
         # commented out because saving pred_dict and diff_dict currently throw errors
         #for k, v in pred_dict.items():
         #    np.save(os.path.join(dirname, f"{k}_pred"), v)
