@@ -17,6 +17,7 @@ NTK_KEYS = {
     for problem in PROBLEMS
     for method in NTK_METHODS
 }
+NTK_KEYS.add("lap1_ntk_gan_deqgan")
 
 
 def build_parser():
@@ -43,6 +44,14 @@ def build_parser():
     parser.add_argument("--generator-width", type=int, default=None)
     parser.add_argument("--discriminator-layers", type=int, default=None)
     parser.add_argument("--discriminator-width", type=int, default=None)
+    parser.add_argument(
+        "--disable-rollback",
+        action="store_true",
+        help=(
+            "run the README GAN-without-rollback baseline and write it to a "
+            "separate result directory"
+        ),
+    )
     return parser
 
 
@@ -79,12 +88,34 @@ def apply_overrides(params, args):
         discriminator["n_hidden_units"] = args.discriminator_width
 
 
+def disable_rollback(params, pkey):
+    if pkey == "lap1_ntk_gan_deqgan":
+        raise SystemExit("--disable-rollback is only valid for the 18 standard NTK keys")
+
+    problem, method = pkey.split("_ntk_", 1)
+    params["training"].update(
+        {
+            "G_iters": 1,
+            "D_iters": 1,
+            "adaptive_G": False,
+            "adaptive_D": False,
+            "ntk": False,
+            "energy": False,
+            "dirname": f"{problem.capitalize()}_NTK_none_1_1_{method}",
+        }
+    )
+
+
 def main():
     args = build_parser().parse_args()
     pkey = args.pkey.lower().strip()
     validate_key(args.trainer, pkey)
 
     params = get_config(pkey)
+    if args.disable_rollback:
+        if args.trainer != "ntk":
+            raise SystemExit("--disable-rollback requires --trainer ntk")
+        disable_rollback(params, pkey)
     apply_overrides(params, args)
 
     experiments.train_GAN_2D = (
