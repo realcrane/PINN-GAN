@@ -21,8 +21,6 @@ training:
   d2: 1
   G_iters: 20
   D_iters: 20
-  adaptive_G: True
-  adaptive_D: True
   loss_fn: MSELoss
   ntk: True
   energy: True
