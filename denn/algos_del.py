@@ -333,7 +333,7 @@ def train_GAN_2D(G, D, problem, method='unsupervised', niters=100,
 
         if log:
             if train_mse:
-                print(f'Step {epoch}: G Loss: {g_loss.item():.4e} | D Loss: {d_loss.item():.4e} | r^T K gamma: {metric_rKr_gamma.item():.4e} | Val MSE {val_mse:.4e}')            
+                print(f'Step {epoch}: G Loss: {g_loss.item():.4e} | D Loss: {d_loss.item():.4e} | r^T K gamma: {metric_rKr_gamma.item():.4e} | Val MSE {val_mse:.4e}| Train MSE {train_mse:.4e}')
             else:
                 print(f'Step {epoch}: G Loss: {g_loss.item():.4e} | D Loss: {d_loss.item():.4e} | Val MSE {val_mse:.4e}')
     
