@@ -46,12 +46,7 @@ def gan_experiment(pkey, params):
     np.random.seed(params['training']['modelseed'])
 
     # models
-    if params['generator']['pretrained']:
-        gen = get_pretrained(pkey, params)
-    elif pkey.lower().strip() in ["rays"]:
-        gen = MultiHeadGen(**params['generator'])
-    else:
-        gen = MLP(**params['generator'])
+    gen = MLP(**params['generator'])
     disc = MLP(**params['discriminator'])
 
     # experiment seed
