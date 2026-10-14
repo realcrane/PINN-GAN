@@ -102,25 +102,7 @@ bash scripts/run_ntk_18_norb.sh cuda:0
 ```
 
 The YAML files in `denn/config/` provide the full epoch counts, seeds, model
-sizes, learning rates, and output directory names. Use `--niters 3` for a
-short launchability check without changing the YAML file.
-
-The formal outer-epoch counts are:
-
-| PDE | DEQGAN | NTK-GAN / LSGAN / WGAN |
-|---|---:|---:|
-| Poisson | 3000 | 3000 |
-| Laplace 1 | 3000 | 3000 |
-| Laplace 2 | 4000 | 4000 |
-| Klein–Gordon | 4000 | 4000 |
-| Reaction–diffusion | 4500 | 4500 |
-| Viscous Burgers | 3300 | 3300 |
-
-All published YAML configurations use `seed: 0` and `modelseed: 0`. The
-standard NTK configurations use `g_lr: 0.001`, `d_lr: 0.001`, Adam betas
-`[0.9, 0.999]`, and the rollback controls shown below. A `--niters` override
-changes only the outer-iteration count; the configured network, PDE grid,
-optimizer, loss, and inner generator/discriminator update counts are retained.
+sizes, learning rates, and output directory names.
 
 ## Problems and configuration keys
 
@@ -187,34 +169,6 @@ The legacy module still imports the NTK trainer by default, so use
 prints the devices of the generator, discriminator, and both PDE grid tensors;
 all four should report the selected `cuda:N` value.
 
-## GPU launchability validation
-
-The current source was validated on 2026-10-14 with Python 3.8.18,
-PyTorch 2.1.2+cu121, and two NVIDIA GeForce RTX 4090 GPUs. Each README
-configuration completed one real outer training iteration using its configured
-PDE, model, optimizer, loss, and inner update counts:
-
-| Family | Passed | GPU assignment |
-|---|---:|---|
-| DEQGAN | 6/6 | `cuda:0`, `cuda:1` |
-| NTK with rollback | 18/18 | `cuda:0`, `cuda:1` |
-| NTK without rollback | 18/18 | `cuda:0`, `cuda:1` |
-| Appendix H.3.2 | 1/1 | `cuda:1` |
-| **Total** | **43/43** | **21 on `cuda:0`, 22 on `cuda:1`** |
-
-For all 43 runs, the generator, discriminator, and both PDE grid tensors
-reported the requested GPU. All runs exited with status zero and produced a
-saved configuration, finite one-step metric arrays, and both result plots; all
-37 NTK runs also produced a loadable finite generator checkpoint. The status
-files and detailed audit are in
-`logs/readme_validation_smoke_20261014_shared_device_recheck4_cuda_smoke/` and
-`results/readme_gpu_validation_20261014.md`.
-
-This is a launchability/GPU-routing check, not evidence that all formal
-3000–4500-epoch experiments have converged or reproduced the paper metrics.
-For a full-run claim, run the batch commands without `--niters`, require every
-process to exit successfully, and audit the configured-length finite metric
-arrays, plots, saved configuration, and NTK checkpoint.
 
 ## Results
 
