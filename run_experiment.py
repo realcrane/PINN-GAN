@@ -3,6 +3,8 @@
 
 import argparse
 
+import torch
+
 import denn.experiments as experiments
 from denn.algos_NTK import train_GAN_2D as train_ntk
 from denn.algos_del import train_GAN_2D as train_deqgan
@@ -20,6 +22,47 @@ NTK_KEYS = {
 NTK_KEYS.add("lap1_ntk_gan_deqgan")
 
 
+def resolve_device(requested):
+    """Resolve a portable CPU/CUDA device selection.
+
+    CUDA indices are interpreted after any CUDA_VISIBLE_DEVICES remapping, as
+    usual in PyTorch.  An explicit CUDA request fails clearly instead of
+    silently falling back to CPU; ``auto`` uses CUDA when available and CPU
+    otherwise.
+    """
+    if requested in (None, "", "auto"):
+        return torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
+    try:
+        device = torch.device(requested)
+    except (RuntimeError, ValueError) as exc:
+        raise SystemExit(f"Invalid device {requested!r}: {exc}") from exc
+
+    if device.type == "cuda":
+        if not torch.cuda.is_available():
+            raise SystemExit(
+                "CUDA was requested, but torch.cuda.is_available() is False"
+            )
+
+        index = 0 if device.index is None else device.index
+        device_count = torch.cuda.device_count()
+        if index < 0 or index >= device_count:
+            raise SystemExit(
+                f"Requested cuda:{index}, but only {device_count} CUDA "
+                "device(s) are visible"
+            )
+
+        device = torch.device(f"cuda:{index}")
+        torch.cuda.set_device(device)
+    elif device.type != "cpu":
+        raise SystemExit(
+            f"Unsupported device type {device.type!r}; use auto, cpu, cuda, "
+            "or cuda:N"
+        )
+
+    return device
+
+
 def build_parser():
     parser = argparse.ArgumentParser(
         description="Run one of the reproducible six-PDE experiments."
@@ -33,8 +76,11 @@ def build_parser():
     parser.add_argument("--pkey", required=True, help="YAML configuration key")
     parser.add_argument(
         "--device",
-        default=None,
-        help="PyTorch device, e.g. cuda:0 or cpu (default: CUDA if available)",
+        default="auto",
+        help=(
+            "PyTorch device: auto, cpu, cuda, or cuda:N "
+            "(default: auto selects cuda:0 when available)"
+        ),
     )
     parser.add_argument("--niters", type=int, default=None)
     parser.add_argument("--dirname", default=None)
@@ -108,6 +154,14 @@ def disable_rollback(params, pkey):
 
 def main():
     args = build_parser().parse_args()
+    device = resolve_device(args.device)
+
+    # Models, PDE grids, constants, and labels in the retained research code
+    # use PyTorch factory functions without explicit device arguments.  Set the
+    # process-wide default before any of them are constructed so this wrapper
+    # can remain the single device-selection entry point.
+    torch.set_default_device(device)
+
     pkey = args.pkey.lower().strip()
     validate_key(args.trainer, pkey)
 
@@ -123,9 +177,9 @@ def main():
     )
     print(
         f"Running trainer={args.trainer}, pkey={pkey}, "
-        f"device={args.device or 'auto'}"
+        f"device={device}"
     )
-    experiments.gan_experiment(pkey, params, device=args.device)
+    experiments.gan_experiment(pkey, params)
     return 0
 
 
