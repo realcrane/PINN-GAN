@@ -46,6 +46,7 @@ def gan_experiment(pkey, params):
     np.random.seed(params['training']['modelseed'])
 
     # models
+    
     gen = MLP(**params['generator'])
     disc = MLP(**params['discriminator'])
 
@@ -55,7 +56,42 @@ def gan_experiment(pkey, params):
 
     # run
     problem = get_problem(pkey, params)
-    res = train_GAN_2D(gen, disc, problem, **params['training'], config=params)
+
+    x, y = problem.get_grid()
+    generator_device = next(gen.parameters()).device
+    discriminator_device = next(disc.parameters()).device
+
+    devices = {
+        generator_device,
+        discriminator_device,
+        x.device,
+        y.device,
+    }
+
+    print(
+        "Actual devices: "
+        f"generator={generator_device}, "
+        f"discriminator={discriminator_device}, "
+        f"grid_x={x.device}, "
+        f"grid_y={y.device}"
+    )
+
+    if len(devices) != 1:
+        raise RuntimeError(
+            "Device mismatch: "
+            f"generator={generator_device}, "
+            f"discriminator={discriminator_device}, "
+            f"grid_x={x.device}, "
+            f"grid_y={y.device}"
+        )
+
+    res = train_GAN_2D(
+        gen,
+        disc,
+        problem,
+        **params["training"],
+        config=params,
+    )
 
     return res
 
